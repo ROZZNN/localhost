@@ -1,2 +1,57 @@
+# Правила для всех поисковых роботов
 User-agent: *
-Disallow:
+
+# Разрешаем индексацию главной страницы и публичных разделов
+Allow: /
+Allow: /site/index
+Allow: /site/about
+Allow: /site/contact
+
+# Запрещаем индексацию системных директорий
+Disallow: /assets/
+Disallow: /protected/
+Disallow: /vendor/
+Disallow: /runtime/
+Disallow: /config/
+
+# Запрещаем индексацию административных разделов
+Disallow: /admin/
+Disallow: /account/
+Disallow: /site/login
+Disallow: /site/logout
+Disallow: /site/registration
+
+# Запрещаем индексацию личных библиотек пользователей
+Disallow: /booksstorage/
+Disallow: /site/read
+Disallow: /site/my-books
+
+# Запрещаем индексацию служебных файлов
+Disallow: /*.php$
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.txt$
+Disallow: /composer.
+Disallow: /package.
+Disallow: /.git
+Disallow: /.env
+
+# Правила для Яндекс.Бота
+User-agent: Yandex
+Clean-param: utm_source&utm_medium&utm_campaign
+Clean-param: openstat
+Host: localhost
+
+# Правила для Google
+User-agent: Googlebot
+Disallow: /*?*
+
+# Правила для Bing
+User-agent: Bingbot
+Disallow: /*?*
+
+# Указываем расположение карты сайта
+Sitemap: http://localhost/sitemap.xml
+
+# Устанавливаем рекомендуемую задержку между запросами (в секундах)
+Crawl-delay: 10
