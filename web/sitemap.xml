@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Главная страница -->
+    <url>
+        <loc>http://localhost/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <lastmod>2024-03-20</lastmod>
+    </url>
+
+    <!-- О нас -->
+    <url>
+        <loc>http://localhost/site/about</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <lastmod>2024-03-20</lastmod>
+    </url>
+
+    <!-- Контакты -->
+    <url>
+        <loc>http://localhost/site/contact</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <lastmod>2024-03-20</lastmod>
+    </url>
+
+    <!-- Регистрация -->
+    <url>
+        <loc>http://localhost/site/registration</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+        <lastmod>2024-03-20</lastmod>
+    </url>
+
+    <!-- Вход -->
+    <url>
+        <loc>http://localhost/site/login</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+        <lastmod>2024-03-20</lastmod>
+    </url>
+
+</urlset> 
