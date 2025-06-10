@@ -1,0 +1,47 @@
+need Интеграция Calibre в ваш проект
+
+3.1. Загрузка книг через веб-интерфейс
+
+Перейдите в http://localhost:8083.
+Нажмите Upload и загрузите FB2-файл.
+Calibre-Web автоматически добавит книгу в библиотеку.
+3.2. Конвертация FB2 → EPUB/PDF через API
+
+Calibre-Web поддерживает REST API для управления книгами.
+
+Пример API-запроса (Python)
+
+python
+import requests
+
+CALIBRE_WEB_URL = "http://localhost:8083/api"
+API_KEY = "ваш_api_ключ"
+
+# Получить список книг
+response = requests.get(
+    f"{CALIBRE_WEB_URL}/books",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)
+print(response.json())
+
+# Конвертировать книгу (используя Calibre CLI)
+import subprocess
+subprocess.run(["ebook-convert", "book.fb2", "book.epub"])
+Пример PHP-скрипта для конвертации
+
+php
+<?php
+$fb2File = "/var/www/uploads/book.fb2";
+$epubFile = "/var/www/uploads/book.epub";
+
+// Конвертируем FB2 → EPUB
+exec("ebook-convert {$fb2File} {$epubFile}");
+
+if (file_exists($epubFile)) {
+    header("Content-Type: application/epub+zip");
+    header("Content-Disposition: attachment; filename=book.epub");
+    readfile($epubFile);
+} else {
+    echo "Ошибка конвертации!";
+}
+?>
