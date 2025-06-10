@@ -100,6 +100,7 @@ class AccountController extends Controller
     public function actionCreate()
     {
         $model = new Book();
+        $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -113,6 +114,8 @@ class AccountController extends Controller
                     
                     Yii::info('Начало загрузки файла. Путь: ' . $model->pathway);
                     Yii::info('Временный файл: ' . $model->uploadedFile->tempName);
+                    Yii::info('MIME тип: ' . $model->uploadedFile->type);
+                    Yii::info('Размер файла: ' . $model->uploadedFile->size);
                     
                     // Проверяем, существует ли временный файл
                     if (!file_exists($model->uploadedFile->tempName)) {
@@ -128,7 +131,7 @@ class AccountController extends Controller
                             Yii::info('Модель сохранена в БД. ID: ' . $model->id);
                             
                             // Сохраняем файл
-                            $filePath = 'C:/OSPanel/domains/localhost/web/booksstorage/' . $uniqueId . '.txt';
+                            $filePath = Yii::getAlias('@webroot') . '/booksstorage/' . $uniqueId . '.txt';
                             if ($model->saveFile($filePath)) {
                                 Yii::info('Файл успешно сохранен: ' . $filePath);
                                 

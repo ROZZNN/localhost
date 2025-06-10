@@ -6,7 +6,7 @@ use yii\bootstrap5\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 /** @var ActiveForm $form */
-$this->title = 'Sign up';
+$this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="registration" style='width: 100%; max-width: 40%;'>
@@ -21,12 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </style>
 
     <?php $form = ActiveForm::begin(); ?>
-        <?= $form->field($model, 'login')->textInput(['autofocus' => true, 'required' => true, 'placeholder' => 'Enter your login'])->hint('Login must be between 3 and 20 characters') ?>
-        <?= $form->field($model, 'email')->input('email', ['required' => true, 'placeholder' => 'Enter your email'])->hint('Please enter a valid email address') ?>
-        <?= $form->field($model, 'password')->passwordInput(['required' => true, 'placeholder' => 'Enter your password'])->hint('Password must be at least 8 characters') ?>
+        <?= $form->field($model, 'login')->textInput(['autofocus' => true, 'required' => true, 'placeholder' => 'Введите логин'])->hint('Логин должен содержать от 3 до 20 символов') ?>
+        <?= $form->field($model, 'email')->input('email', ['required' => true, 'placeholder' => 'Введите email'])->hint('Пожалуйста, введите корректный email адрес') ?>
+        <?= $form->field($model, 'password')->passwordInput(['required' => true, 'placeholder' => 'Введите пароль'])->hint('Пароль должен содержать минимум 8 символов') ?>
     
         <div class="form-group">
-            <?= Html::submitButton('Sign up', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary']) ?>
         </div>
         <p>39ke35r7</p>
     <?php ActiveForm::end(); ?>

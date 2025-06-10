@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "post".
@@ -10,10 +11,11 @@ use Yii;
  * @property int $id
  * @property int $id_user
  * @property string $massege
+ * @property string $created_at
  *
  * @property User $user
  */
-class Post extends \yii\db\ActiveRecord
+class Post extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,7 +33,8 @@ class Post extends \yii\db\ActiveRecord
         return [
             [['id_user', 'massege'], 'required'],
             [['id_user'], 'integer'],
-            [['massege'], 'string', 'max' => 255],
+            [['massege'], 'string'],
+            [['created_at'], 'safe'],
             [['id_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_user' => 'id']],
         ];
     }
@@ -44,7 +47,8 @@ class Post extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'id_user' => 'Id User',
-            'massege' => 'Massege',
+            'massege' => 'Сообщение',
+            'created_at' => 'Дата создания',
         ];
     }
 
@@ -56,5 +60,13 @@ class Post extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'id_user']);
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->created_at = date('Y-m-d H:i:s');
+        }
+        return parent::beforeSave($insert);
     }
 }

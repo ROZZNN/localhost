@@ -18,7 +18,7 @@ $this->title = 'Читалка - ' . $book->title;
 
 <div class="reader-container">
     <!-- Кнопка возврата на главную -->
-    <a href="/account" class="nav-button home-button position-fixed" style="top: 20px; right: 20px; z-index: 9999;" data-bs-toggle="tooltip" data-bs-placement="left" title="Вернуться на главную">
+    <a href="<?= Yii::getAlias('@web') ?>/account" class="nav-button home-button position-fixed" style="top: 20px; right: 20px; z-index: 9999;" data-bs-toggle="tooltip" data-bs-placement="left" title="Вернуться на главную">
         <i class="fa-solid fa-arrow-left"></i>
     </a>
 
@@ -99,7 +99,7 @@ $this->title = 'Читалка - ' . $book->title;
     min-height: 100%;
     margin: 0 auto;
     padding: 0;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     position: fixed;
     top: 0;
@@ -107,53 +107,54 @@ $this->title = 'Читалка - ' . $book->title;
     right: 0;
     bottom: 0;
     z-index: 9999;
-    color: #000;
+    color: #000000;
     overflow-y: auto;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
-/* Добавляем затемняющий фон */
-.reader-container::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    min-height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: -1;
+/* Стили для светлой темы */
+.reader-container {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --hover-bg: rgba(0,0,0,0.02);
+    --shadow-color: rgba(0,0,0,0.1);
+    --gradient-start: rgba(255,255,255,0.9);
+    --gradient-end: rgba(255,255,255,0);
+    --first-letter-color: #666666;
 }
 
-.dark-mode .reader-container::before {
-    background: rgba(0, 0, 0, 0.7);  /* Более темный фон для темной темы */
-}
-
+/* Стили для темной темы */
 .reader-container.dark-mode {
-    background: #2a2a2a;
-    color: #e0e0e0;
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --hover-bg: rgba(255,255,255,0.05);
+    --shadow-color: rgba(255,255,255,0.1);
+    --gradient-start: rgba(26,26,26,0.9);
+    --gradient-end: rgba(26,26,26,0);
+    --first-letter-color: #cccccc;
+}
+
+.reader-container {
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 .reader-content {
     flex: 1;
     line-height: 1.8;
     font-size: 16px;
-    background: #fff;
+    background: var(--bg-color);
     transition: all 0.3s ease;
     overflow-y: auto;
-    color: #000;
+    color: var(--text-color);
     padding-bottom: 70px;
     width: 100%;
     margin: 0 auto;
     text-align: justify;
     position: relative;
     max-width: 800px;
-}
-
-.dark-mode .reader-content {
-    background: #2a2a2a;
-    color: #e0e0e0;
 }
 
 .reader-content::before {
@@ -163,7 +164,7 @@ $this->title = 'Читалка - ' . $book->title;
     left: 0;
     right: 0;
     height: 100px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
     pointer-events: none;
     z-index: 1;
 }
@@ -175,17 +176,9 @@ $this->title = 'Читалка - ' . $book->title;
     left: 0;
     right: 0;
     height: 100px;
-    background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    background: linear-gradient(to top, var(--gradient-start), var(--gradient-end));
     pointer-events: none;
     z-index: 1;
-}
-
-.dark-mode .reader-content::before {
-    background: linear-gradient(to bottom, rgba(42,42,42,0.9), rgba(42,42,42,0));
-}
-
-.dark-mode .reader-content::after {
-    background: linear-gradient(to top, rgba(42,42,42,0.9), rgba(42,42,42,0));
 }
 
 .book-line {
@@ -203,531 +196,198 @@ $this->title = 'Читалка - ' . $book->title;
 }
 
 .book-line:hover {
-    background: rgba(0,0,0,0.02);
+    background: var(--hover-bg);
     transform: translateX(5px) scale(1.01);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.dark-mode .book-line:hover {
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .book-line::first-letter {
     font-size: 1.2em;
     font-weight: bold;
-    color: #666;
+    color: var(--first-letter-color);
 }
 
-.dark-mode .book-line::first-letter {
-    color: #999;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    border: none;
-    z-index: 1000;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    opacity: 0.5;
-}
-
-.carousel-control-prev {
-    left: 20px;
-}
-
-.carousel-control-next {
-    right: 20px;
-}
-
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-    background-color: rgba(0,0,0,0.7);
-    transform: translateY(-50%) scale(1.1);
-    opacity: 1;
-}
-
-.dark-mode .carousel-control-prev,
-.dark-mode .carousel-control-next {
-    background-color: rgba(255,255,255,0.2);
-}
-
-.dark-mode .carousel-control-prev:hover,
-.dark-mode .carousel-control-next:hover {
-    background-color: rgba(255,255,255,0.3);
-}
-
+/* Стили для панели управления */
 .control-panel {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 15px;
-    border-top: 1px solid #eee;
-    background: #f8f9fa;
+    background: var(--bg-color);
+    padding: 1rem;
+    box-shadow: 0 -2px 10px var(--shadow-color);
+    z-index: 1000;
     transition: all 0.3s ease;
-    z-index: 10000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
-.dark-mode .control-panel {
-    border-top: 1px solid #3a3a3a;
-    background: rgba(42,42,42,0.9);
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+.control-panel .btn-group {
+    margin: 0 0.5rem;
 }
 
-.btn-group {
-    margin: 0 5px;
-}
-
-.btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
+.control-panel .btn {
+    border-color: var(--text-color);
+    color: var(--text-color);
     background: transparent;
-}
-
-.dark-mode .btn-outline-primary {
-    border-color: #0d6efd;
-    color: #0d6efd;
-    background: transparent;
-}
-
-.btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.dark-mode .btn-outline-primary:hover {
-    background-color: #0d6efd;
-    color: #fff;
-}
-
-.dropdown-menu {
-    background: #fff;
     transition: all 0.3s ease;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.dark-mode .dropdown-menu {
-    background: rgba(42,42,42,0.95);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.control-panel .btn:hover {
+    background: var(--hover-bg);
+    border-color: var(--text-color);
+    color: var(--text-color);
 }
 
-.dropdown-item {
-    color: #000;
-    transition: all 0.3s ease;
-    padding: 0.5em 1em;
+.control-panel .dropdown-menu {
+    background: var(--bg-color);
+    border-color: var(--text-color);
 }
 
-.dark-mode .dropdown-item {
-    color: #e0e0e0;
+.control-panel .dropdown-item {
+    color: var(--text-color);
 }
 
-.dropdown-item:hover {
-    background: #f8f9fa;
-    transform: translateX(5px);
+.control-panel .dropdown-item:hover {
+    background: var(--hover-bg);
+    color: var(--text-color);
 }
 
-.dark-mode .dropdown-item:hover {
-    background: #3a3a3a;
-    color: #fff;
-}
-
-.home-button {
-    opacity: 0.3;
-    transition: all 0.3s ease;
+/* Стили для кнопок навигации */
+.nav-button {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
     border-radius: 50%;
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.home-button:hover {
-    opacity: 1;
-    transform: scale(1.1);
-    background: rgba(0,0,0,0.1);
-}
-
-.dark-mode .home-button:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-/* Стилизация скроллбара */
-.reader-content::-webkit-scrollbar {
-    width: 12px;
-}
-
-.reader-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 6px;
-}
-
-.reader-content::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 6px;
-    border: 3px solid #f1f1f1;
-    transition: all 0.3s ease;
-}
-
-.reader-content::-webkit-scrollbar-thumb:hover {
-    background-color: #666;
-}
-
-/* Темная тема для скроллбара */
-.dark-mode .reader-content::-webkit-scrollbar-track {
-    background: #3a3a3a;
-}
-
-.dark-mode .reader-content::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border: 3px solid #3a3a3a;
-}
-
-.dark-mode .reader-content::-webkit-scrollbar-thumb:hover {
-    background-color: #666;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.book-line:nth-child(odd) {
-    animation-delay: calc(var(--animation-order) * 0.1s);
-}
-
-.book-line:nth-child(even) {
-    animation-delay: calc(var(--animation-order) * 0.1s + 0.05s);
-}
-
-.book-line:hover {
-    background: rgba(0,0,0,0.02);
-    transform: translateX(5px) scale(1.01);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.dark-mode .book-line:hover {
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-    .reader-container {
-        max-width: 100%;
-    }
-    
-    .reader-content {
-        max-width: 100%;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        width: 40px;
-        height: 40px;
-    }
-
-    .carousel-control-prev {
-        left: 10px;
-    }
-
-    .carousel-control-next {
-        right: 10px;
-    }
-
-    .book-line {
-        font-size: 1em;
-        line-height: 1.4;
-        margin-bottom: 0.6em;
-        padding: 0.3em 0.8em;
-    }
-
-    .btn-group {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    .home-button {
-        top: 5px !important;
-        right: 5px !important;
-        padding: 0.25rem 0.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .reader-content {
-        padding: 1rem;
-    }
-}
-
-/* Стили для кнопок навигации */
-.nav-button {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    color: #007bff;
-    font-size: 1.2em;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-}
-
-.nav-button i {
     transition: all 0.3s ease;
 }
 
 .nav-button:hover {
+    background: var(--hover-bg);
     transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    background: #007bff;
-    color: #fff;
 }
 
-.nav-button:hover i {
-    transform: scale(1.2);
-}
-
-.nav-button:active {
-    transform: scale(0.95);
-}
-
-/* Стили для кнопки настроек */
-.settings-button {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+/* Анимации */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Стили для темной темы */
-.dark-mode .nav-button {
-    background: rgba(255, 255, 255, 0.95);
-    color: #0d6efd;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-.dark-mode .nav-button:hover {
-    background: #0d6efd;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
-}
-
-/* Эффект пульсации при наведении */
-.nav-button::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: rgba(0, 123, 255, 0.2);
-    transform: scale(0);
-    transition: transform 0.3s ease;
-}
-
-.nav-button:hover::after {
-    transform: scale(1.5);
-    opacity: 0;
-}
-
-.dark-mode .nav-button::after {
-    background: rgba(13, 110, 253, 0.2);
-}
-
-/* Добавляем обводку для лучшей видимости */
-.nav-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.nav-button:hover::before {
-    border-color: currentColor;
-}
-
-/* Стили для подсказок */
-.tooltip {
-    font-size: 0.9em;
-    opacity: 0.9;
-}
-
-.tooltip-inner {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 8px 12px;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.dark-mode .tooltip-inner {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #000;
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .control-panel {
+        padding: 0.5rem;
+    }
+    
+    .control-panel .btn-group {
+        margin: 0.25rem;
+    }
+    
+    .control-panel .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+    }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем порядок анимации для каждой строки
-    document.querySelectorAll('.book-line').forEach((line, index) => {
-        line.style.setProperty('--animation-order', index);
-    });
-
-    // Добавляем эффект появления текста при прокрутке
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateX(0)';
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '50px'
-    });
-
-    document.querySelectorAll('.book-line').forEach(line => {
-        observer.observe(line);
-    });
-
-    // Добавляем анимацию при изменении размера окна
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function() {
-            document.querySelectorAll('.book-line').forEach((line, index) => {
-                line.style.setProperty('--animation-order', index);
-            });
-        }, 250);
-    });
-
-    // Управление размером шрифта
-    let fontSize = parseInt(localStorage.getItem('fontSize')) || 16;
-    const content = document.querySelector('.reader-content');
-    content.style.fontSize = fontSize + 'px';
-
-    document.getElementById('font-size-increase').addEventListener('click', () => {
-        fontSize = Math.min(fontSize + 2, 32);
-        content.style.fontSize = fontSize + 'px';
-        localStorage.setItem('fontSize', fontSize);
-    });
-
-    document.getElementById('font-size-decrease').addEventListener('click', () => {
-        fontSize = Math.max(fontSize - 2, 12);
-        content.style.fontSize = fontSize + 'px';
-        localStorage.setItem('fontSize', fontSize);
-    });
-
-    // Управление шрифтами
-    document.querySelectorAll('[data-font]').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            const font = e.target.dataset.font;
-            content.style.fontFamily = font;
-            localStorage.setItem('fontFamily', font);
-        });
-    });
-
-    // Переключение темы
-    const container = document.querySelector('.reader-container');
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    
-    if (isDarkMode) {
-        container.classList.add('dark-mode');
+    // Функция для сохранения настроек в localStorage
+    function saveSettings(settings) {
+        localStorage.setItem('readerSettings', JSON.stringify(settings));
     }
 
-    document.getElementById('dark-theme').addEventListener('click', () => {
-        container.classList.add('dark-mode');
-        localStorage.setItem('darkMode', 'true');
-    });
-
-    document.getElementById('light-theme').addEventListener('click', () => {
-        container.classList.remove('dark-mode');
-        localStorage.setItem('darkMode', 'false');
-    });
-
-    // Управление контрастом
-    let contrast = parseInt(localStorage.getItem('contrast')) || 100;
-    content.style.filter = `contrast(${contrast}%)`;
-
-    document.getElementById('contrast-increase').addEventListener('click', () => {
-        contrast = Math.min(contrast + 10, 150);
-        content.style.filter = `contrast(${contrast}%)`;
-        localStorage.setItem('contrast', contrast);
-    });
-
-    document.getElementById('contrast-decrease').addEventListener('click', () => {
-        contrast = Math.max(contrast - 10, 50);
-        content.style.filter = `contrast(${contrast}%)`;
-        localStorage.setItem('contrast', contrast);
-    });
-
-    // Переключение видимости панели управления
-    const toggleButton = document.getElementById('toggle-controls');
-    const controlPanel = document.querySelector('.control-panel');
-    
-    if (localStorage.getItem('controlPanelVisible') === 'true') {
-        controlPanel.style.display = 'block';
+    // Функция для загрузки настроек из localStorage
+    function loadSettings() {
+        const settings = JSON.parse(localStorage.getItem('readerSettings')) || {
+            fontSize: 16,
+            fontFamily: 'Arial',
+            theme: 'light',
+            contrast: 100
+        };
+        return settings;
     }
 
-    toggleButton.addEventListener('click', () => {
-        if (controlPanel.style.display === 'none') {
-            controlPanel.style.display = 'block';
-            localStorage.setItem('controlPanelVisible', 'true');
+    // Применение настроек
+    function applySettings(settings) {
+        const readerContent = document.getElementById('reader-content');
+        const readerContainer = document.querySelector('.reader-container');
+        
+        readerContent.style.fontSize = settings.fontSize + 'px';
+        readerContent.style.fontFamily = settings.fontFamily;
+        readerContent.style.filter = `contrast(${settings.contrast}%)`;
+        
+        // Переключаем тему
+        if (settings.theme === 'dark') {
+            readerContainer.classList.add('dark-mode');
         } else {
-            controlPanel.style.display = 'none';
-            localStorage.setItem('controlPanelVisible', 'false');
+            readerContainer.classList.remove('dark-mode');
         }
+    }
+
+    // Загрузка сохраненных настроек
+    const settings = loadSettings();
+    applySettings(settings);
+
+    // Обработчики событий для кнопок
+    document.getElementById('font-size-decrease').addEventListener('click', function() {
+        settings.fontSize = Math.max(12, settings.fontSize - 2);
+        applySettings(settings);
+        saveSettings(settings);
     });
 
-    // Инициализация подсказок
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            trigger: 'hover',
-            animation: true
+    document.getElementById('font-size-increase').addEventListener('click', function() {
+        settings.fontSize = Math.min(24, settings.fontSize + 2);
+        applySettings(settings);
+        saveSettings(settings);
+    });
+
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            settings.fontFamily = this.dataset.font;
+            applySettings(settings);
+            saveSettings(settings);
         });
+    });
+
+    document.getElementById('dark-theme').addEventListener('click', function() {
+        settings.theme = 'dark';
+        applySettings(settings);
+        saveSettings(settings);
+    });
+
+    document.getElementById('light-theme').addEventListener('click', function() {
+        settings.theme = 'light';
+        applySettings(settings);
+        saveSettings(settings);
+    });
+
+    document.getElementById('contrast-decrease').addEventListener('click', function() {
+        settings.contrast = Math.max(50, settings.contrast - 10);
+        applySettings(settings);
+        saveSettings(settings);
+    });
+
+    document.getElementById('contrast-increase').addEventListener('click', function() {
+        settings.contrast = Math.min(150, settings.contrast + 10);
+        applySettings(settings);
+        saveSettings(settings);
+    });
+
+    // Переключение панели управления
+    document.getElementById('toggle-controls').addEventListener('click', function() {
+        const controlPanel = document.querySelector('.control-panel');
+        controlPanel.style.display = controlPanel.style.display === 'none' ? 'block' : 'none';
     });
 });
 </script>

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Avatar;
 use app\models\Book;
 use app\models\Bookuser;
+use app\models\Post;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -66,7 +67,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $posts = Post::find()
+            ->with('user')
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+
+        return $this->render('index', [
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -513,6 +521,27 @@ class SiteController extends Controller
 
         Yii::$app->session->setFlash('success', 'Книга успешно удалена');
         return $this->redirect(['my-books']);
+    }
+
+    public function actionCreatePost()
+    {
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->id_role === 1) {
+            $post = new Post();
+            
+            if ($post->load(Yii::$app->request->post())) {
+                $post->id_user = Yii::$app->user->id;
+                if ($post->save()) {
+                    Yii::$app->session->setFlash('success', 'Пост успешно создан');
+                    return $this->redirect(['index']);
+                }
+            }
+            
+            return $this->render('create-post', [
+                'post' => $post
+            ]);
+        }
+        
+        return $this->redirect(['index']);
     }
 }
 

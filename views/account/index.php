@@ -94,6 +94,39 @@ $this->registerCss("
         background-color: #dc3545;
         border-color: #dc3545;
     }
+
+    /* Адаптивные стили */
+    @media (max-width: 768px) {
+        .user-profile {
+            text-align: center;
+        }
+        
+        .user-profile .d-flex {
+            flex-direction: column;
+        }
+        
+        .avatar-circle {
+            margin: 0 auto 1rem;
+        }
+        
+        .book-item .d-flex {
+            flex-direction: column;
+        }
+        
+        .book-item .btn-group {
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .mb-4.d-flex {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .mb-4.d-flex > div {
+            margin-top: 1rem;
+        }
+    }
 ");
 ?>
 
@@ -101,7 +134,7 @@ $this->registerCss("
     <div class="user-profile mb-4">
         <div class="d-flex align-items-center">
             <div class="avatar-circle me-3">
-                <img src="<?= Yii::$app->user->identity->id_avatar ? '/web/avatar/' . Yii::$app->user->identity->id_avatar . '.png' : '/web/avatar/1.png' ?>" class="rounded-circle" width="200" height="200" alt="Avatar">
+                <img src="<?= Yii::getAlias('@web') ?>/avatar/<?= Yii::$app->user->identity->id_avatar ? Yii::$app->user->identity->id_avatar . '.jpg' : '1.jpg' ?>" class="rounded-circle" width="200" height="200" alt="Avatar">
             </div>
             <h2 style="font-size: 2em;"><?= Html::encode(Yii::$app->user->identity->login) ?></h2>
         </div>
@@ -118,17 +151,11 @@ $this->registerCss("
         <h3>Мои книги</h3>
         <div>
             <?php if (Yii::$app->user->identity->isAdmin()): ?>
-                <?= Html::a('Добавить пост', ['/post/create'], ['class' => 'btn btn-primary me-2']) ?>
+                <?= Html::a('Добавить пост', ['/admin/create'], ['class' => 'btn btn-primary me-2']) ?>
             <?php endif; ?>
             <?= Html::a('Загрузить книгу', ['create'], ['class' => 'btn btn-success']) ?>
         </div>
     </div>
-
-    <?php if (Yii::$app->user->identity->isAdmin()): ?>
-        <p>
-            <?= Html::a('Добавить пост', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
-    <?php endif; ?>
 
     <?php Pjax::begin(); ?>
     <?= ListView::widget([
@@ -160,37 +187,6 @@ $this->registerCss("
         'summary' => '<div class="text-muted mb-3">Показано {begin}-{end} из {totalCount} книг</div>',
     ]) ?>
     <?php Pjax::end(); ?>
-
-    <div class="site-index">
-    <!-- Мобильная навигация -->
-    <div class="d-md-none fixed-bottom bg-dark" style="z-index: 1000;">
-        <div class="row m-0">
-            <div class="col-3 p-0">
-                <a href="/site/index" class="btn w-100 rounded-0 py-3" style="background-color:rgba(0, 118, 81, 1); color:whitesmoke;">
-                    <i class="fas fa-home"></i>
-                    <div class="small">Главная</div>
-                </a>
-            </div>
-            <div class="col-3 p-0">
-                <a href="/site/about" class="btn w-100 rounded-0 py-3" style="background-color:rgba(0, 118, 81, 1); color:whitesmoke;">
-                    <i class="fas fa-book"></i>
-                    <div class="small">читалка</div>
-                </a>
-            </div>
-            <div class="col-3 p-0">
-                <a href="#" class="btn w-100 rounded-0 py-3 disabled" style="background-color:rgba(0, 118, 81, 1); color:whitesmoke;">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <div class="small">Вход</div>
-                </a>
-            </div>
-            <div class="col-3 p-0">
-                <a href="/account" class="btn w-100 rounded-0 py-3" style="background-color:rgba(0, 118, 81, 1); color:whitesmoke;">
-                    <i class="fas fa-user"></i>
-                    <div class="small">Профиль</div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

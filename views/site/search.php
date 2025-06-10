@@ -139,12 +139,43 @@ $this->registerCss("
         background-color: rgba(255, 255, 255, 0.2);
         color: white;
     }
+
+    .search-form {
+        margin-top: 20px;
+    }
+
+    .search-form .form-control {
+        border: none;
+        border-radius: 5px 0 0 5px;
+        padding: 10px 15px;
+        font-size: 1.1em;
+    }
+
+    .search-form .btn {
+        border-radius: 0 5px 5px 0;
+        padding: 10px 20px;
+    }
+
+    .search-form .input-group {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 ");
 ?>
 
 <div class="search-page">
     <div class="search-header">
         <h1><?= Html::encode($this->title) ?></h1>
+        
+        <?= Html::beginForm(['/site/search'], 'get', ['class' => 'search-form mb-4']) ?>
+            <div class="input-group">
+                <?= Html::textInput('q', Yii::$app->request->get('q'), [
+                    'class' => 'form-control',
+                    'placeholder' => 'Введите название книги или автора...',
+                    'style' => 'background-color: rgba(255, 255, 255, 0.9);'
+                ]) ?>
+                <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
+            </div>
+        <?= Html::endForm() ?>
     </div>
 
     <?php if (Yii::$app->session->hasFlash('success')): ?>

@@ -15,6 +15,7 @@ use yii\helpers\FileHelper;
  * @property string $visible
  * @property string $pathway
  * @property string|null $description
+ * @property int $user_id
  *
  * @property Bookuser[] $bookusers
  * @property UploadedFile $uploadedFile
@@ -37,9 +38,15 @@ class Book extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'author', 'visible'], 'required'],
+            [['title', 'author', 'visible', 'user_id'], 'required'],
             [['title', 'author', 'visible', 'pathway', 'description'], 'string', 'max' => 255],
-            [['uploadedFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'txt, pdf'],
+            [['user_id'], 'integer'],
+            [['uploadedFile'], 'file', 
+                'skipOnEmpty' => true, 
+                'extensions' => ['txt', 'fb2'],
+                'maxSize' => 10 * 1024 * 1024, // 10MB
+                'checkExtensionByMimeType' => false // Отключаем строгую проверку MIME-типов
+            ],
             ['visible', 'validateVisibility'],
         ];
     }
@@ -51,11 +58,12 @@ class Book extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'author' => 'Author',
-            'visible' => 'Visible',
-            'pathway' => 'Pathway',
-            'description' => 'Description',
+            'title' => 'Название',
+            'author' => 'Автор',
+            'visible' => 'Видимость',
+            'pathway' => 'Путь',
+            'description' => 'Описание',
+            'user_id' => 'ID пользователя',
         ];
     }
 
@@ -105,7 +113,27 @@ class Book extends \yii\db\ActiveRecord
         }
 
         try {
-            return $this->uploadedFile->saveAs($filePath);
+            // Создаем директорию, если она не существует
+            $dir = dirname($filePath);
+            if (!file_exists($dir)) {
+                FileHelper::createDirectory($dir, 0777, true);
+            }
+
+            $extension = strtolower($this->uploadedFile->extension);
+            
+            if ($extension === 'fb2') {
+                // Читаем содержимое FB2 файла
+                $fb2Content = file_get_contents($this->uploadedFile->tempName);
+                
+                // Конвертируем FB2 в TXT
+                $txtContent = Fb2Converter::convertToTxt($fb2Content);
+                
+                // Сохраняем TXT файл
+                return file_put_contents($filePath, $txtContent) !== false;
+            } else {
+                // Для TXT файлов просто сохраняем как есть
+                return $this->uploadedFile->saveAs($filePath, ['overwrite' => true]);
+            }
         } catch (\Exception $e) {
             Yii::error('Ошибка при сохранении файла: ' . $e->getMessage());
             return false;

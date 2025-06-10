@@ -31,7 +31,7 @@ use yii\helpers\ArrayHelper;
         <?= Html::activeHiddenInput($model, 'visible', ['value' => '0']) ?>
     <?php endif; ?>
 
-    <?= $form->field($model, 'uploadedFile')->fileInput(['accept' => '.txt'])->hint('Загрузите текстовый файл книги (.txt)') ?>
+    <?= $form->field($model, 'uploadedFile')->fileInput(['accept' => '.txt,.fb2'])->hint('Загрузите текстовый файл (.txt) или FB2 файл (.fb2)') ?>
 
     <?= $form->field($model, 'pathway')->hiddenInput()->label(false) ?>
 

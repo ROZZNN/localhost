@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * AdminController implements the CRUD actions for Post model.
@@ -80,8 +81,12 @@ class AdminController extends Controller
         $model = new Post();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->id_user = Yii::$app->user->id;
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Пост успешно создан');
+                    return $this->redirect(['/site/index']);
+                }
             }
         } else {
             $model->loadDefaultValues();

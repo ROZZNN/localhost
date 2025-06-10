@@ -17,6 +17,9 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'HJOPafhui0fejbujoBUJ9OER',
             'baseUrl' => '',
+            'secureHeaders' => [
+                'X-Forwarded-Proto' => 'https',
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -48,7 +51,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'admin/create-post' => 'admin/create-post',
+                'site/index' => 'site/index',
             ],
+            'hostInfo' => 'https://' . $_SERVER['HTTP_HOST'],
         ],
     ],
     'params' => $params,
@@ -61,7 +67,7 @@ if (YII_ENV_DEV) {
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
-         'allowedIPs' => ['*'],
+        //  'allowedIPs' => ['*'],
     ];
 
     $config['bootstrap'][] = 'gii';
@@ -69,7 +75,7 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
-         'allowedIPs' => ['*'],
+        //  'allowedIPs' => ['*'],
     ];
 }
 
